@@ -1,5 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Mamady Nabé</title><link href="http://mamadyonline.github.io/" rel="alternate"></link><link href="http://mamadyonline.github.io/feeds/all.atom.xml" rel="self"></link><id>http://mamadyonline.github.io/</id><updated>2018-10-29T00:00:00+01:00</updated><entry><title>Les démarches administratives en France, par un étranger</title><link href="http://mamadyonline.github.io/les-demarches-administratives-en-france-par-un-etranger.html" rel="alternate"></link><published>2018-10-29T00:00:00+01:00</published><updated>2018-10-29T00:00:00+01:00</updated><author><name>Mamady Nabé</name></author><id>tag:mamadyonline.github.io,2018-10-29:/les-demarches-administratives-en-france-par-un-etranger.html</id><summary type="html">&lt;p&gt;Dans cette publication, je vais essayer de parler des démarches administratives en France, cette routine qui se passe une fois annuellement, et qui a la célèbre réputation d'être quand même très spéciale.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Mamady Nabé</title><link href="http://mamadyonline.github.io/" rel="alternate"></link><link href="http://mamadyonline.github.io/feeds/all.atom.xml" rel="self"></link><id>http://mamadyonline.github.io/</id><updated>2018-11-05T00:00:00+01:00</updated><entry><title>A tutorial on optimization algorithms, example of PSO</title><link href="http://mamadyonline.github.io/a-tutorial-on-optimization-algorithms-example-of-pso-en.html" rel="alternate"></link><published>2018-11-05T00:00:00+01:00</published><updated>2018-11-05T00:00:00+01:00</updated><author><name>Mamady Nabé</name></author><id>tag:mamadyonline.github.io,2018-11-05:/a-tutorial-on-optimization-algorithms-example-of-pso-en.html</id><summary type="html">&lt;p&gt;This will be my first technical article for my blog. The idea is to start a series of tutorials about optimization algorithms. In this post, I'll make a quick introduction to what is an optimization algorithm and then I'll talk about one specific that is, Particle Swarm Optimization (PSO).&lt;/p&gt;
+&lt;h2&gt;What …&lt;/h2&gt;</summary><content type="html">&lt;p&gt;This will be my first technical article for my blog. The idea is to start a series of tutorials about optimization algorithms. In this post, I'll make a quick introduction to what is an optimization algorithm and then I'll talk about one specific that is, Particle Swarm Optimization (PSO).&lt;/p&gt;
+&lt;h2&gt;What is an optimization algorithm ?&lt;/h2&gt;
+&lt;p&gt;Optimization algorithms are here to solve optimization problems where we want to find the best solution within a large set of possible solutions.&lt;/p&gt;
+&lt;p&gt;Optimization problems are everywhere. For instance, when we enter a super market, the goal is to purchase all the things we need in a short time and with little expenses. Doing so we are optimizing our time and our budget.&lt;/p&gt;
+&lt;p&gt;We can define an optimization problem by three things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The measure of success (technically the &lt;strong&gt;&lt;em&gt;cost function&lt;/em&gt;&lt;/strong&gt;) which will be maximized or minimized.&lt;/li&gt;
+&lt;li&gt;Instances of the problem which are the possible &lt;strong&gt;&lt;em&gt;inputs&lt;/em&gt;&lt;/strong&gt; to the problem, expressed in terms of &lt;strong&gt;&lt;em&gt;design variables&lt;/em&gt;&lt;/strong&gt;. These Instances can be subject to some &lt;strong&gt;&lt;em&gt;constraints&lt;/em&gt;&lt;/strong&gt;, thus setting bounds on the possible values to explore.&lt;/li&gt;
+&lt;li&gt;The set of possible solutions which define the &lt;strong&gt;&lt;em&gt;space to explore&lt;/em&gt;&lt;/strong&gt; in order to find the best solution.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Generally, exploring the set of solutions is computationally heavy and very time consuming, that is why there are various algorithms to tackle these problems and find an appropriate and acceptable solution in a reasonable time.&lt;/p&gt;
+&lt;p&gt;These algorithms are iterative, and according to some criteria, one can decide whether the solution found is good enough to stop the optimization process. When that is possible, we speak about the algorithm &lt;strong&gt;&lt;em&gt;convergence&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;One of these algorithms is the Particle Swarm Optimization (PSO), which is the subject of this post. First, I'll try to explain how it works, then I'll walk you through a &lt;strong&gt;&lt;em&gt;Python&lt;/em&gt;&lt;/strong&gt; implementation, and test it on a real example.&lt;/p&gt;
+&lt;h2&gt;What is Particle Swarm Optimization (PSO)?&lt;/h2&gt;
+&lt;p&gt;PSO is an iterative optimization algorithm which tries to simulate social behaviour. It was developped by Dr. Eberhart and Dr. Kennedy, back in 1995.&lt;/p&gt;
+&lt;p&gt;It is best known that working together in order to achieve a goal is more efficient than no team work at all. PSO leverages this social behaviour by prevailing the information sharing between a set of possible candidate solutions, each called a particle.&lt;/p&gt;
+&lt;p&gt;A particle is defined by:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A position. For example when the design variables are limited to two (i.e plane), a particle is defined by its coordinate (x,y).&lt;/li&gt;
+&lt;li&gt;A velocity. This is a value used to move the particle position toward the best solution.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The information sharing is performed in two ways, giving two variants of PSO:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Local PSO, in which the information sharing is between every particle and its direct neighbors. Here a particle's movement, at each iteration, is influenced by its local best known position. The particle and its neighbors form a &lt;strong&gt;ring data structure topology&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Gloabl PSO, where the information sharing is between every particle and the best particle of all, defined by the best position. It is the best position which guides the movements of all the other particles, at each iteration. Here the particles are organized in a &lt;strong&gt;star data structure topology&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="center"&gt;Local PSO&lt;/th&gt;
+&lt;th align="center"&gt;Global PSO&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;&lt;img alt="Local PSO data structure" src="/images/pso-ring.png"&gt;&lt;/td&gt;
+&lt;td align="center"&gt;&lt;img alt="Global PSO data structure" src="/images/pso-star.png"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Now that we understand how it works. Let's see the algorithm.&lt;/p&gt;
+&lt;h2&gt;The Algorithm&lt;/h2&gt;
+&lt;p&gt;We start by initializing randomly a population of particles in the search space. And through various iterations, each particle moves toward the best solution by following either the global best solution at each iteration or its locally best known solution among its neighbors, depending whether we consider local or global PSO.&lt;/p&gt;
+&lt;p&gt;Here is the pseudo-code for global PSO:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;For each particle
+    Randomly intialize its position and velocity
+END
+Do
+  For each particle
+      Calculate its fitness value (measure of success)
+      If the fitness value is better than the best fitness value (pBest) in history
+            Set current value as the new pBest
+  END
+
+  Choose the particle with the best fitness value of all the particles as the gBest
+  For each particle
+      Calculate particle velocity
+      Update particle position using the computed velocity
+  End
+While maximum iterations or minimum error criteria is not attained
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Python Implementation&lt;/h2&gt;
+&lt;p&gt;The points to discuss here are the the initializations of the particle and their updates, both for the positions and the velocities.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Particles are initialized randomly using a uniform distribution.&lt;/li&gt;
+&lt;li&gt;The updates are performed using a slightly modified version of the initial paper, by the same authors (For further reading, go check this paper &lt;a href="http://www.softcomputing.net/nabic11_7.pdf"&gt;Inertia weight strategies in PSO&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here is the python code which tries to implement a simple PSO:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;PSO&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;        Class implementing PSO algorithm.&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;init_pos&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_particles&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;            Initialize the key variables.&lt;/span&gt;
+
+&lt;span class="sd"&gt;            Args:&lt;/span&gt;
+&lt;span class="sd"&gt;                func (function): the fitness function to optimize.&lt;/span&gt;
+&lt;span class="sd"&gt;                init_pos (array-like): the initial position to kick off the&lt;/span&gt;
+&lt;span class="sd"&gt;                                       optimization process.&lt;/span&gt;
+&lt;span class="sd"&gt;                n_particles (int): the number of particles of the swarm.&lt;/span&gt;
+&lt;span class="sd"&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;n_particles&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;n_particles&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;init_pos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;init_pos&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particle_dim&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;init_pos&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="c1"&gt;# Initialize particle positions using a uniform distribution&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uniform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_particles&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particle_dim&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; \
+                            &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;init_pos&lt;/span&gt;
+        &lt;span class="c1"&gt;# Initialize particle velocities using a uniform distribution&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;velocities&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uniform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_particles&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particle_dim&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+        &lt;span class="c1"&gt;# Initialize the best positions&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;init_pos&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;p_best&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;update_position&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;            Update particle position.&lt;/span&gt;
+
+&lt;span class="sd"&gt;            Args:&lt;/span&gt;
+&lt;span class="sd"&gt;                x (array-like): particle current position.&lt;/span&gt;
+&lt;span class="sd"&gt;                v (array-like): particle current velocity.&lt;/span&gt;
+
+&lt;span class="sd"&gt;            Returns:&lt;/span&gt;
+&lt;span class="sd"&gt;                The updated position (array-like).&lt;/span&gt;
+&lt;span class="sd"&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;new_x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;new_x&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;update_velocity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_best&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;g_best&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c0&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.75&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;            Update particle velocity.&lt;/span&gt;
+
+&lt;span class="sd"&gt;            Args:&lt;/span&gt;
+&lt;span class="sd"&gt;                x (array-like): particle current position.&lt;/span&gt;
+&lt;span class="sd"&gt;                v (array-like): particle current velocity.&lt;/span&gt;
+&lt;span class="sd"&gt;                p_best (array-like): the best position found so far for a particle.&lt;/span&gt;
+&lt;span class="sd"&gt;                g_best (array-like): the best position regarding&lt;/span&gt;
+&lt;span class="sd"&gt;                                     all the particles found so far.&lt;/span&gt;
+&lt;span class="sd"&gt;                c0 (float): the cognitive scaling constant.&lt;/span&gt;
+&lt;span class="sd"&gt;                c1 (float): the social scaling constant.&lt;/span&gt;
+&lt;span class="sd"&gt;                w (float): the inertia weight&lt;/span&gt;
+
+&lt;span class="sd"&gt;            Returns:&lt;/span&gt;
+&lt;span class="sd"&gt;                The updated velocity (array-like).&lt;/span&gt;
+&lt;span class="sd"&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Position and velocity must have same shape&amp;#39;&lt;/span&gt;
+        &lt;span class="c1"&gt;# a random number between 0 and 1.&lt;/span&gt;
+        &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uniform&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="n"&gt;p_best&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_best&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;g_best&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="n"&gt;new_v&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;c0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_best&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;new_v&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;optimize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;maxiter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;            Run the PSO optimization process untill the stoping criteria is met.&lt;/span&gt;
+&lt;span class="sd"&gt;            Case for minimization. The aim is to minimize the cost function.&lt;/span&gt;
+
+&lt;span class="sd"&gt;            Args:&lt;/span&gt;
+&lt;span class="sd"&gt;                maxiter (int): the maximum number of iterations before stopping&lt;/span&gt;
+&lt;span class="sd"&gt;                               the optimization.&lt;/span&gt;
+
+&lt;span class="sd"&gt;            Returns:&lt;/span&gt;
+&lt;span class="sd"&gt;                The best solution found (array-like).&lt;/span&gt;
+&lt;span class="sd"&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;maxiter&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;n_particles&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+                &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;velocities&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                &lt;span class="n"&gt;p_best&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;p_best&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;velocities&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update_velocity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_best&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update_position&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="c1"&gt;# Update the best position for particle i&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p_best&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+                    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;p_best&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                &lt;span class="c1"&gt;# Update the best position overall&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+                    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;particles_pos&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;g_best&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can test it on the sphere function, for example.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;sphere&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;      f(x,y) = x² + y²&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="c1"&gt;# If there is a main put this in the main&lt;/span&gt;
+&lt;span class="n"&gt;init_pos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;PSO_s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PSO&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sphere&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;init_pos&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;init_pos&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_particles&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;res_s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PSO_s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;optimize&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Sphere function&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x = {res_s[0]}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# x = [-0.00025538 -0.00137996  0.00248555]&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;f = {res_s[1]}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# f = 8.14748063004205e-06&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Some points to discuss&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;The initial point matters a lot in the performance of the optimization algorithm. As a rule of thumbs, as far as it is from the optmum, as long it takes the algorithm to converge (this is true for all optimization algorithms).&lt;/li&gt;
+&lt;li&gt;PSO is a stochastic algorithm, the updates are performed using random processes. This can make it hard to track the solutions for multiple optimizatiion processes run. We can always use a seed for the random numbers though.&lt;/li&gt;
+&lt;li&gt;It does not absolutely find the global optimal solution, but it does a good job finding one which is very close. For the sphere function, the global optimum is at (0, 0, 0), my implementation found another point which is not too bad.&lt;/li&gt;
+&lt;li&gt;Depending on the number of particles, the convergence might take longer. Generally, it is better not to go beyong 50.&lt;/li&gt;
+&lt;li&gt;For difficult functions, we might need more iterations before being able to find a good solution, between 500 and 1000 iterations.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This is the end of this long post. I hope it helps, I tried my best to keep it simple.&lt;/p&gt;
+&lt;p&gt;For a more advanced PSO, I highly recommend this open source python library &lt;a href="https://github.com/mamadyonline/pyswarms"&gt;Pyswarms&lt;/a&gt;. You can also find all the code on my github at &lt;a href="https://github.com/mamadyonline/Optimization-algorithm-tutorials"&gt;My simple implementation&lt;/a&gt;.&lt;/p&gt;</content><category term="optimization"></category><category term="algorithms"></category><category term="machine learning"></category><category term="data science"></category></entry><entry><title>Les démarches administratives en France, par un étranger</title><link href="http://mamadyonline.github.io/les-demarches-administratives-en-france-par-un-etranger.html" rel="alternate"></link><published>2018-10-29T00:00:00+01:00</published><updated>2018-10-29T00:00:00+01:00</updated><author><name>Mamady Nabé</name></author><id>tag:mamadyonline.github.io,2018-10-29:/les-demarches-administratives-en-france-par-un-etranger.html</id><summary type="html">&lt;p&gt;Dans cette publication, je vais essayer de parler des démarches administratives en France, cette routine qui se passe une fois annuellement, et qui a la célèbre réputation d'être quand même très spéciale.&lt;/p&gt;
 &lt;p&gt;Tout commence les premiers jours quand on attérit en France. Entre l'émerveillement et le désenchantement, les premiers instants …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Dans cette publication, je vais essayer de parler des démarches administratives en France, cette routine qui se passe une fois annuellement, et qui a la célèbre réputation d'être quand même très spéciale.&lt;/p&gt;
 &lt;p&gt;Tout commence les premiers jours quand on attérit en France. Entre l'émerveillement et le désenchantement, les premiers instants sont durs. Entre les premières démarches pour trouver son logement et celles pour régulariser son séjour, un seul dénominateur commun: les paperasses.&lt;/p&gt;
 &lt;hr&gt;
