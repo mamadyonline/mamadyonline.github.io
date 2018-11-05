@@ -30,7 +30,7 @@
 
   <!-- CSS
   ================================================== -->
-  <link rel="stylesheet" href="/theme/css/style.min.css?a5c2ef23">
+  <link rel="stylesheet" href="/theme/css/style.min.css?3246d842">
   <!-- Feeds
   ================================================== -->
   <!--   <link rel="alternate" type="application/atom+xml" href="http://mamadyonline.github.io/feeds/all.atom.xml" title="Mamady Nabé Full Atom Feed">
@@ -209,103 +209,103 @@ While maximum iterations or minimum error criteria is not attained
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="k">class</span> <span class="nc">PSO</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class implementing PSO algorithm.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">init_pos</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Class implementing PSO algorithm.</span>
+<span class="sd">      Initialize the key variables.</span>
+
+<span class="sd">      Args:</span>
+<span class="sd">        func (function): the fitness function to optimize.</span>
+<span class="sd">        init_pos (array-like): the initial position to kick off the</span>
+<span class="sd">                               optimization process.</span>
+<span class="sd">        n_particles (int): the number of particles of the swarm.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">init_pos</span><span class="p">,</span> <span class="n">n_particles</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Initialize the key variables.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_particles</span> <span class="o">=</span> <span class="n">n_particles</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">init_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">init_pos</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">particle_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_pos</span><span class="p">)</span>
+    <span class="c1"># Initialize particle positions using a uniform distribution</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_particles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_dim</span><span class="p">))</span> \
+                        <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_pos</span>
+    <span class="c1"># Initialize particle velocities using a uniform distribution</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_particles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_dim</span><span class="p">))</span>
 
-<span class="sd">            Args:</span>
-<span class="sd">                func (function): the fitness function to optimize.</span>
-<span class="sd">                init_pos (array-like): the initial position to kick off the</span>
-<span class="sd">                                       optimization process.</span>
-<span class="sd">                n_particles (int): the number of particles of the swarm.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_particles</span> <span class="o">=</span> <span class="n">n_particles</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">init_pos</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">particle_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_pos</span><span class="p">)</span>
-        <span class="c1"># Initialize particle positions using a uniform distribution</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_particles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_dim</span><span class="p">))</span> \
-                            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_pos</span>
-        <span class="c1"># Initialize particle velocities using a uniform distribution</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_particles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_dim</span><span class="p">))</span>
+    <span class="c1"># Initialize the best positions</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span> <span class="o">=</span> <span class="n">init_pos</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">p_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span>
 
-        <span class="c1"># Initialize the best positions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span> <span class="o">=</span> <span class="n">init_pos</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span>
+  <span class="k">def</span> <span class="nf">update_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Update particle position.</span>
 
-    <span class="k">def</span> <span class="nf">update_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Update particle position.</span>
+<span class="sd">      Args:</span>
+<span class="sd">        x (array-like): particle current position.</span>
+<span class="sd">        v (array-like): particle current velocity.</span>
 
-<span class="sd">            Args:</span>
-<span class="sd">                x (array-like): particle current position.</span>
-<span class="sd">                v (array-like): particle current velocity.</span>
+<span class="sd">      Returns:</span>
+<span class="sd">        The updated position (array-like).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">new_x</span>
 
-<span class="sd">            Returns:</span>
-<span class="sd">                The updated position (array-like).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">v</span>
-        <span class="k">return</span> <span class="n">new_x</span>
+  <span class="k">def</span> <span class="nf">update_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p_best</span><span class="p">,</span> <span class="n">g_best</span><span class="p">,</span> <span class="n">c0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c1</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.75</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Update particle velocity.</span>
 
-    <span class="k">def</span> <span class="nf">update_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p_best</span><span class="p">,</span> <span class="n">g_best</span><span class="p">,</span> <span class="n">c0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c1</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.75</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Update particle velocity.</span>
+<span class="sd">      Args:</span>
+<span class="sd">        x (array-like): particle current position.</span>
+<span class="sd">        v (array-like): particle current velocity.</span>
+<span class="sd">        p_best (array-like): the best position found so far for a particle.</span>
+<span class="sd">        g_best (array-like): the best position regarding</span>
+<span class="sd">                             all the particles found so far.</span>
+<span class="sd">        c0 (float): the cognitive scaling constant.</span>
+<span class="sd">        c1 (float): the social scaling constant.</span>
+<span class="sd">        w (float): the inertia weight</span>
 
-<span class="sd">            Args:</span>
-<span class="sd">                x (array-like): particle current position.</span>
-<span class="sd">                v (array-like): particle current velocity.</span>
-<span class="sd">                p_best (array-like): the best position found so far for a particle.</span>
-<span class="sd">                g_best (array-like): the best position regarding</span>
-<span class="sd">                                     all the particles found so far.</span>
-<span class="sd">                c0 (float): the cognitive scaling constant.</span>
-<span class="sd">                c1 (float): the social scaling constant.</span>
-<span class="sd">                w (float): the inertia weight</span>
+<span class="sd">      Returns:</span>
+<span class="sd">        The updated velocity (array-like).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;Position and velocity must have same shape&#39;</span>
+    <span class="c1"># a random number between 0 and 1.</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">()</span>
+    <span class="n">p_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p_best</span><span class="p">)</span>
+    <span class="n">g_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">g_best</span><span class="p">)</span>
 
-<span class="sd">            Returns:</span>
-<span class="sd">                The updated velocity (array-like).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;Position and velocity must have same shape&#39;</span>
-        <span class="c1"># a random number between 0 and 1.</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">()</span>
-        <span class="n">p_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p_best</span><span class="p">)</span>
-        <span class="n">g_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">g_best</span><span class="p">)</span>
+    <span class="n">new_v</span> <span class="o">=</span> <span class="n">w</span><span class="o">*</span><span class="n">v</span> <span class="o">+</span> <span class="n">c0</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_best</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">g_best</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_v</span>
 
-        <span class="n">new_v</span> <span class="o">=</span> <span class="n">w</span><span class="o">*</span><span class="n">v</span> <span class="o">+</span> <span class="n">c0</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_best</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">g_best</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">new_v</span>
+  <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Run the PSO optimization process untill the stoping criteria is met.</span>
+<span class="sd">      Case for minimization. The aim is to minimize the cost function.</span>
 
-    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Run the PSO optimization process untill the stoping criteria is met.</span>
-<span class="sd">            Case for minimization. The aim is to minimize the cost function.</span>
+<span class="sd">      Args:</span>
+<span class="sd">          maxiter (int): the maximum number of iterations before stopping</span>
+<span class="sd">                         the optimization.</span>
 
-<span class="sd">            Args:</span>
-<span class="sd">                maxiter (int): the maximum number of iterations before stopping</span>
-<span class="sd">                               the optimization.</span>
-
-<span class="sd">            Returns:</span>
-<span class="sd">                The best solution found (array-like).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_particles</span><span class="p">):</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">p_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_velocity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p_best</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-                <span class="c1"># Update the best position for particle i</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">p_best</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">p_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="c1"># Update the best position overall</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">)</span>
+<span class="sd">      Returns:</span>
+<span class="sd">          The best solution found (array-like).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_particles</span><span class="p">):</span>
+          <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+          <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+          <span class="n">p_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_velocity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p_best</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+          <span class="c1"># Update the best position for particle i</span>
+          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">p_best</span><span class="p">):</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">p_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+          <span class="c1"># Update the best position overall</span>
+          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">):</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">)</span>
 </pre></div>
 
 
@@ -336,9 +336,11 @@ While maximum iterations or minimum error criteria is not attained
 </ol>
 <p>This is the end of this long post. I hope it helps, I tried my best to keep it simple.</p>
 <p>For a more advanced PSO, I highly recommend this open source python library <a href="https://github.com/mamadyonline/pyswarms">Pyswarms</a>. You can also find all the code on my github at <a href="https://github.com/mamadyonline/Optimization-algorithm-tutorials">My simple implementation</a>.</p>
-<p>Reference:
-<a href="http://www.swarmintelligence.org/tutorials.php"></a>
-<a href="http://www.softcomputing.net/nabic11_7.pdf">Inertia weight strategies in PSO</a>)</p>
+<h2>Reference:</h2>
+<ul>
+<li><a href="http://www.swarmintelligence.org/tutorials.php">Swarm intelligence</a></li>
+<li><a href="http://www.softcomputing.net/nabic11_7.pdf">Inertia weight strategies in PSO</a></li>
+</ul>
   </div>
 
   <hr class="small"></hr>
