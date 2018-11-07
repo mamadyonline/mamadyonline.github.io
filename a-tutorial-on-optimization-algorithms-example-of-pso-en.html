@@ -314,7 +314,7 @@ While maximum iterations or minimum error criteria is not attained
 <p>We can test it on the sphere function, for example.</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sphere</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">      f(x,y) = x² + y²</span>
+<span class="sd">      In 3D: f(x,y,z) = x² + y² + z²</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 
@@ -332,7 +332,7 @@ While maximum iterations or minimum error criteria is not attained
 <ol>
 <li>The initial point matters a lot in the performance of the optimization algorithm. As a rule of thumbs, as far as it is from the optmum, as long it takes the algorithm to converge (this is true for all optimization algorithms).</li>
 <li>PSO is a stochastic algorithm, the updates are performed using random processes. This can make it hard to track the solutions for multiple optimizatiion processes run. We can always use a seed for the random numbers though.</li>
-<li>It does not absolutely find the global optimal solution, but it does a good job finding one which is very close. For the sphere function, the global optimum is at (0, 0), my implementation found another point which is not too bad.</li>
+<li>It does not absolutely find the global optimal solution, but it does a good job finding one which is very close. For the sphere function, the global optimum is at (0, 0, 0), my implementation found another point which is not too bad.</li>
 <li>Depending on the number of particles, the convergence might take longer. Generally, it is better not to go beyong 50.</li>
 <li>For difficult functions, we might need more iterations before being able to find a good solution, between 500 and 1000 iterations.</li>
 </ol>
