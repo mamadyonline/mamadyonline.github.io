@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="fr"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="fr"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="fr"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="fr"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Building a data pipeline: from python objects to a database</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Mamady Nabé">
+  <meta name="copyright" content="&copy; Copyright Mamady Nabé, 2018-2019 ">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?3246d842">
+  <!-- Feeds
+  ================================================== -->
+  <!--   <link rel="alternate" type="application/atom+xml" href="http://mamadyonline.github.io/feeds/all.atom.xml" title="Mamady Nabé Full Atom Feed">
+ -->
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Building a data pipeline: from python objects to a database">
+  <meta property="og:url" content="http://mamadyonline.github.io/building-a-data-pipeline-from-python-objects-to-a-database-en.html">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Mamady Nabé">
+  <meta property="og:image" content="http://mamadyonline.github.io">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@MamadyNabeke">
+  <meta name="twitter:creator" content="@MamadyNabeke">
+  <meta name="twitter:domain" content="mamadyonline.github.io">
+  <meta name="twitter:image" content="http://mamadyonline.github.io/theme/static/images/logo.png">
+  <meta name="twitter:title" content="Building a data pipeline: from python objects to a database">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<!-- <link rel="shortcut icon" href=""> -->
+	<link rel="apple-touch-icon" href="/theme/static/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/static/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/static/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns">
+      <ul>
+        <!-- <li>
+          <a href="/" title="Accueil"><img id="logo" src="/theme/static/images/logo.png" alt="Mamady Nabé"></a>
+        </li>
+        <li> -->
+          <h1><a href="/" title="Accueil">Mamady Nabé</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/MamadyNabeke" title="Twitter">
+            <i class="fa fa-twitter"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://github.com/mamadyonline" title="Github">
+            <i class="fa fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="http://linkedin.com/in/mamady" title="Linkedin">
+            <i class="fa fa-linkedin"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://fr.quora.com/profile/Mamady-Nab%C3%A9" title="Quora">
+            <i class="fa fa-quora"></i>
+          </a>
+        </li>
+
+        <li>
+          <a class="icon" href="mailto:mamady.nabe@outlook.com" title="Email">
+            <i class="fa fa-envelope-o"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/nouvelles/">Nouvelles</a></li>
+        <li><a href="/blog/">Blog</a></li>
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/building-a-data-pipeline-from-python-objects-to-a-database-en.html" title="Permalink to Building a data pipeline: from python objects to a database">Building a data pipeline: from python objects to a database</a></h1>
+  <h5 class="article-date">juin 10, 2019
+ | Tags:         <a class="tag" href="/tag/database.html" rel="tag" title="Posts tagged with ">database</a>
+        <a class="tag" href="/tag/data-engineering.html" rel="tag" title="Posts tagged with ">data engineering</a>
+        <a class="tag" href="/tag/postgresql.html" rel="tag" title="Posts tagged with ">postgresql</a>
+        <a class="tag" href="/tag/data-science.html" rel="tag" title="Posts tagged with ">data science</a>
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <p>There are many ways to store data. There are text files, CSVs (Comma Separated Values), excel tables and so on. They all have their pros and cons. But in this blog post, I am going to talk about one server-based database: Postgres.</p>
+<p>I will walk you through the installation of a working environment and a complete example of how one can go from python objects to a database.</p>
+<h2>What are the needs ?</h2>
+<ul>
+<li>A library that can convert objects to a data structure understandable by databases, this is called an <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">ORM</a> (Object Relational Mapper). For this we will use the python library <a href="https://www.sqlalchemy.org/">SQLAlchemy</a>. It does more than just translating objects from python to databases' data structures, it abstracts away many low level concepts such as connection, querying, and it offers several ways to interact with databases.</li>
+</ul>
+<p>Using SQLAlchemy efficiently leads to more readable and easy-to-maintain code. A downside though, I think, is, it is not advisable to use it when we want to learn about SQL. Even though it offers the possibility to work with raw SQL queries.</p>
+<ul>
+<li>A database where we'll store our data for later ease of access and querying. Rather than installing the full fledge PostgreSQl, we are going to use a dockerized version of it. <a href="https://www.docker.com/">Docker</a> makes software installation very easy and takes away all the pain that comes often with installing softwares.</li>
+</ul>
+<p>All you need is to have it installed on your machine. For installation guide, go <a href="https://docs.docker.com/install/">here</a>. And to get the docker, this <a href="https://hackernoon.com/dont-install-postgres-docker-pull-postgres-bee20e200198">medium post</a> does a good job.</p>
+<ul>
+<li>
+<p>A python Data base API for communicating with PostgreSQl. You can find a list of options <a href="https://wiki.python.org/moin/PostgreSQL">here</a>. For this post, we are going to use <a href="http://initd.org/psycopg/docs/">psycopg2</a>. SQLAlchemy needs this to properly communicate with the Postgres database.</p>
+</li>
+<li>
+<p>[Optional] A virtual env which will contain only the necessary packages and where we'll do all the programming work.</p>
+</li>
+</ul>
+<p><img alt="PostgreSQL" src="/images/postgresql.jpg"></p>
+<h2>SQLAlchemy ORM core concepts</h2>
+<p>At its core, there are <a href="https://docs.sqlalchemy.org/en/11/core/engines.html">Engines</a>. As mentioned on the official website, it is the starting point for any SQLAlchemy application. It contains all the necessary stuffs to interact with a DBAPI (for those interested, you can find <a href="https://www.python.org/dev/peps/pep-0249/">here</a>, the full operations for the Python DBAPI) by making them accessible anytime there is a need.</p>
+<p>Another core concept for the SQLAlchemy ORM is <strong>Session</strong>. It is very a convenient technical solution that makes the data persistence easy enough to avoid the user manually reporting all the changes to the created objects. All the queries are dealt with through sessions. For that purpose, it needs to have connection established with the database all the time, and whenever you want to affect changes to existing data or to evaluate queries, a simple notification sent is enough (through an implementation of the DBAPI <em>commit</em> or <em>rollback</em>). It thus works in common with the Engine.</p>
+<p>The final concept I would like to talk about before getting to the practice is Table. Creating tables via the SQLAlchemy ORM is as easy as creating classes. The only thing to do is to inherit from a base class which notifies SQLAlchemy that the class should be treated as the definition of a database table.</p>
+<p><img alt="SQLAlchemy logo" src="/images/sqlalchemy.jpg"></p>
+<h2>A complete walk through an example</h2>
+<p>The example project will consist of storing some information about football players in a Postgres database using the SQLAlchemy ORM. To do this I created a project with the following structure:</p>
+<p><img alt="Project folder structure" src="/images/data_eng_folder_struct.png"></p>
+<ul>
+<li>a base file where are defined the configurations: Engine, Session and models base class.</li>
+<li>a model file where is defined the table for players.</li>
+<li>a class containing useful queries for our needs.</li>
+<li>a fake player generator file using a very useful library: <a href="https://faker.readthedocs.io/en/stable/">Faker</a>.</li>
+</ul>
+<p>The first thing to do is to define the configurations to use in order to communicate with the database. Here is the code which does that:</p>
+<div class="gist">
+    <script src='https://gist.github.com/bd1533fd0461d995cc9a6554fce3ac87.js'></script>
+    <noscript>
+        <pre><code>"""This code creates:
+
+* a SQLAlchemy Engine that will interact with our dockerized PostgreSQL database,
+* a SQLAlchemy ORM session factory bound to this engine,
+* a base class for our classes definitions.
+"""
+
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+POSTGRES_USER = 'postgres'
+POSTGRES_PASSWORD = 'docker'
+POSTGRES_HOST = 'localhost'
+POSTGRES_PORT = 5432
+db_name = 'postgres'
+DATABASE_URI = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}' \
+    f'@{POSTGRES_HOST}:{POSTGRES_PORT}/'
+
+# create the postgres database engine
+data_base = create_engine(f'{DATABASE_URI}{db_name}')
+
+# make a session binding to the database in a global scope
+Session = sessionmaker(data_base)
+
+# Base class for all the models.
+Base = declarative_base()
+</code></pre>
+    </noscript>
+</div>
+<p>After doing that, we can now define the table associated to players in a declarative way.</p>
+<div class="gist">
+    <script src='https://gist.github.com/2a0693908e2e6d99fa5dba106238ce7c.js'></script>
+    <noscript>
+        <pre><code>"""Create players class and define its characteristics"""
+
+from data_engineering.database.base import Base
+from sqlalchemy import String, Integer, Column, Boolean
+
+
+class Player(Base):
+    __tablename__ = 'players'
+
+    id = Column(Integer, primary_key=True)
+    name = Column('name', String)
+    nationality = Column('nationality',String)
+    club = Column('club', String)  # current if still active, last club if retired
+    total_scored_goals = Column('total_scored_goals', Integer)
+    total_personal_trophies = Column('total_personal_goals', Integer)
+    active = Column('active', Boolean)
+
+    def __init__(self, name, nationality, club,
+                 total_scored_goals, total_personal_trophies, active):
+        """Initialize without the id component as it is taken care of automatically."""
+        self.name = name
+        self.nationality = nationality
+        self.club = club
+        self.total_scored_goals = total_scored_goals
+        self.total_personal_trophies = total_personal_trophies
+        self.active = active
+
+    def __repr__(self):
+        """Prettify when we print a player"""
+        if self.active:
+            to_print = f"<Player({self.name} from {self.nationality}, " \
+                f"currently playing at {self.club} with {self.total_scored_goals} goals)>"
+        else:
+            to_print = f"<Player({self.name} from {self.nationality}, " \
+                f"retired while at {self.club}) with {self.total_scored_goals} goals>"
+        return to_print
+</code></pre>
+    </noscript>
+</div>
+<p>Now we can define all the operations we want to handle through SQLAlchemy on the database (currently on the <em>players</em> table). This is a class containing some of the operations we can do.</p>
+<div class="gist">
+    <script src='https://gist.github.com/49b2d753b836a45eba6bd3707b78915e.js'></script>
+    <noscript>
+        <pre><code>"""Class defining some queries for the database via SQLAlchemy"""
+from typing import List
+
+from data_engineering.database.base import Base, Session, data_base
+from data_engineering.database.players import Player
+
+
+class DataBase:
+
+    def __init__(self):
+        # create a session and register players table
+        self.session = Session()
+        Base.metadata.create_all(data_base)
+
+    def drop_all(self):
+        self.session.query(Player).delete()
+        self.session.commit()
+
+    def add_new_player(self, player: Player):
+        self.session.add(player)
+        self.session.commit()
+
+    def add_players(self, players: List[Player]):
+        for player in players:
+            self.session.add(player)
+        self.session.commit()
+
+    def read_all(self):
+        return self.session.query(Player).all()
+
+    def delete_entry(self, player):
+        self.session.query(Player).filter(Player == player).delete()
+        self.session.commit()
+
+    def get_players_from_club(self, club: str = 'Barcelona'):
+        players = self.session.query(Player).filter(Player.club == club).all()
+        return players
+
+    def delete_players_from_club(self, club: str = 'PSG'):
+        self.session.query(Player).filter(Player.club == club).delete()
+        self.session.commit()
+
+    def get_top_scorers(self):
+        top_scorers = self.session.query(Player).filter(Player.total_scored_goals >= 600).all()
+        return top_scorers
+
+    def close(self):
+        self.session.close()
+</code></pre>
+    </noscript>
+</div>
+<p>All this done, for tests purpose and to be able to store many players still avoiding the tedious work to create all of them by hand, we need a data generator.</p>
+<div class="gist">
+    <script src='https://gist.github.com/ad96e0bfebd418248b1a062b18088221.js'></script>
+    <noscript>
+        <pre><code>from faker import Faker
+import random
+
+COUNTRIES = ['Argentina', 'Portugal', 'France', 'Brazil', 
+             'England', 'Belgium', 'Italy', 'Spain', 'Germany',
+             'Ivory coast', 'Guinea', 'Senegal', 'Ghana', 
+             'Nigeria', 'Cameroun', 'Egypt', 'Morocco', 'Algeria',
+             'USA', 'Croatia', 'Sweden', 'Columbia', 'Netherlands', 
+             'Danemark', 'Ireland', 'Switzerland']
+
+CLUBS = ['Barcelona', 'Real Madrid', 'Juventus', 'Liverpool', 
+         'Ajax', 'Totenham', 'PSG', 'Lyon', 'Napoli',
+         'Olympique de Marseille', 'Valence FC', 
+         'Manchester United', 'Manchester City', 'Chealsea', 
+         'Athlético Madrid', 'Bayern de Munich', 'Dortmund', 
+         'Arsenal', 'AC Milan', 'Roma', 'Inter', 'Monaco', 'Sevilla']
+
+fake = Faker()
+
+
+def generate_fake_player():
+    d = dict()
+    d['name'] = lambda: fake.name_male()
+    d['nationality'] = lambda: random.choice(COUNTRIES)
+    d['club'] = lambda: random.choice(CLUBS)
+    d['total_scored_goals'] = lambda: random.randint(0, 700)
+    d['total_personal_trophies'] = lambda: random.randint(0, 20)
+    d['active'] = lambda: random.choice([False, True])
+    return {k: d[k]() for k in d.keys()}
+</code></pre>
+    </noscript>
+</div>
+<p>It is now very easy to test all these. Of course, for this to work, the Postgres should be accessible.</p>
+<div class="gist">
+    <script src='https://gist.github.com/5b4b787cb421ab37bfc86c037e363607.js'></script>
+    <noscript>
+        <pre><code>"""Test data base module"""
+import unittest
+
+from data_engineering.database.fake_players import generate_fake_player
+from data_engineering.database.players import Player
+from data_engineering.database.postgres_db import DataBase
+
+
+class TestDB(unittest.TestCase):
+    def setUp(self) -> None:
+        """Instantiate a class to work with"""
+        self.postgres = DataBase()
+
+    def tearDown(self) -> None:
+        """empty table and close connection"""
+        self.postgres.drop_all()
+        self.postgres.close()
+
+    def test_insert_one_player(self):
+        """Insert one player"""
+        messi = Player(name='Lionel Messi', nationality='Argentina',
+                       club='Barcelona', total_scored_goals=686,
+                       total_personal_trophies=15, active=True)
+        self.postgres.add_new_player(messi)
+        db_content = [player for player in self.postgres.read_all()]
+        self.assertEqual(1, len(db_content))
+        self.assertEqual(messi, db_content[0])
+
+    def test_insert_more_than_one_player(self):
+        # create players
+        messi = Player(name='Lionel Messi', nationality='Argentina',
+                       club='Barcelona', total_scored_goals=686,
+                       total_personal_trophies=15, active=True)
+        cristiano = Player(name='Cristiano Ronaldo', nationality='Portugal',
+                           club='Juventus', total_scored_goals=680,
+                           total_personal_trophies=18, active=True)
+        players = [messi, cristiano]
+        NB = 1000
+        fake_players = [generate_fake_player() for _ in range(NB)]
+        players.extend([Player(**player) for player in fake_players])
+        # add them all
+        self.postgres.add_players(players)
+        db_content = [player for player in self.postgres.read_all()]
+        self.assertEqual(NB + 2, len(db_content))
+        self.assertEqual(messi, db_content[0])
+        self.assertEqual(cristiano, db_content[1])
+
+        # get players from Barcelona: should contain at least Messi
+        barca_players = [b_p for b_p in self.postgres.get_players_from_club('Barcelona')]
+        self.assertGreaterEqual(len(barca_players), 1)
+        self.assertIn(messi, barca_players)
+
+        # get top scorers: should contain at least Messi and Cristiano
+        top_scorers = [t_p for t_p in self.postgres.get_top_scorers()]
+        self.assertGreaterEqual(len(top_scorers), 2)
+        self.assertIn(messi, top_scorers)
+        self.assertIn(cristiano, top_scorers)
+</code></pre>
+    </noscript>
+</div>
+<h2>Summary</h2>
+<p>In this blog, we looked at some concepts of ORM and dive into a practical session using the python library <em>SQLAlchemy</em> to interact with a <em>Postgres</em> database to manipulate a model of football players. We saw how powerful the SQLAlchemy ORM is and how clean it makes the code, avoiding all the intricacies of raw SQL queries.</p>
+<p>Now that we have some data available in a database, the next step is to build a data flow around this using a tool such as <a href="https://beam.apache.org/">apache beam</a>.</p>
+<p>I really hope you enjoyed this, don't hesitate to send comments.</p>
+<p><strong>Note</strong>: All the code is available on my Github <a href="https://github.com/mamadyonline/data_engineering">here</a>.</p>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="MamadyNabeke">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://mamadyonline.github.io/building-a-data-pipeline-from-python-objects-to-a-database-en.html"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Aller à l'accueil</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Généré avec <a href="http://getpelican.com">Pelican</a>. Thème void par <a href="https://github.com/gjreda/void">Greg Reda</a></p>
+  <p>&copy; Copyright Mamady Nabé, 2018</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-116900970-1']);
+  _gaq.push(['_setDomainName', 'mamadyonline.github.io']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+</html>
