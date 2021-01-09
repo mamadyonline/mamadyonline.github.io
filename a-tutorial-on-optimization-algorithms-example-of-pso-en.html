@@ -33,7 +33,8 @@
   <link rel="stylesheet" href="/theme/css/style.min.css?3246d842">
   <!-- Feeds
   ================================================== -->
-  <!--  -->
+  <!--   <link rel="alternate" type="application/atom+xml" href="http://mamadyonline.github.io/feeds/all.atom.xml" title="Mamady Nabé Full Atom Feed">
+ -->
 
 	<!-- Facebook Open Graph
   ================================================== -->
@@ -182,23 +183,23 @@
 
 <p>We start by initializing randomly a population of particles in the search space. And through various iterations, each particle moves toward the best solution by following either the global best solution at each iteration or its locally best-known solution among its neighbors, depending on whether we consider local or global PSO.</p>
 <p>Here is the pseudo-code for global PSO:</p>
-<div class="highlight"><pre><span></span>For each particle
-    Randomly initialize its position and velocity
-END
-Do
-  For each particle
-      Calculate its fitness value (measure of success)
-      If the fitness value is better than the best fitness value (pBest) in history
-            Set current value as the new pBest
-  END
+<div class="highlight"><pre><span></span><code><span class="k">For</span> <span class="k">each</span> <span class="n">particle</span>
+    <span class="n">Randomly</span> <span class="k">initialize</span> <span class="n">its</span> <span class="k">position</span> <span class="k">and</span> <span class="n">velocity</span>
+<span class="k">END</span>
+<span class="k">Do</span>
+  <span class="k">For</span> <span class="k">each</span> <span class="n">particle</span>
+      <span class="n">Calculate</span> <span class="n">its</span> <span class="n">fitness</span> <span class="n">value</span> <span class="p">(</span><span class="n">measure</span> <span class="k">of</span> <span class="n">success</span><span class="p">)</span>
+      <span class="k">If</span> <span class="n">the</span> <span class="n">fitness</span> <span class="n">value</span> <span class="k">is</span> <span class="n">better</span> <span class="k">than</span> <span class="n">the</span> <span class="n">best</span> <span class="n">fitness</span> <span class="n">value</span> <span class="p">(</span><span class="n">pBest</span><span class="p">)</span> <span class="k">in</span> <span class="n">history</span>
+            <span class="k">Set</span> <span class="k">current</span> <span class="n">value</span> <span class="k">as</span> <span class="n">the</span> <span class="k">new</span> <span class="n">pBest</span>
+  <span class="k">END</span>
 
-  Choose the particle with the best fitness value of all the particles as the gBest
-  For each particle
-      Calculate particle velocity
-      Update particle position using the computed velocity
-  End
-While maximum iterations or minimum error criteria is not attained
-</pre></div>
+  <span class="n">Choose</span> <span class="n">the</span> <span class="n">particle</span> <span class="k">with</span> <span class="n">the</span> <span class="n">best</span> <span class="n">fitness</span> <span class="n">value</span> <span class="k">of</span> <span class="k">all</span> <span class="n">the</span> <span class="n">particles</span> <span class="k">as</span> <span class="n">the</span> <span class="n">gBest</span>
+  <span class="k">For</span> <span class="k">each</span> <span class="n">particle</span>
+      <span class="n">Calculate</span> <span class="n">particle</span> <span class="n">velocity</span>
+      <span class="k">Update</span> <span class="n">particle</span> <span class="k">position</span> <span class="k">using</span> <span class="n">the</span> <span class="n">computed</span> <span class="n">velocity</span>
+  <span class="k">End</span>
+<span class="n">While</span> <span class="n">maximum</span> <span class="n">iterations</span> <span class="k">or</span> <span class="n">minimum</span> <span class="n">error</span> <span class="n">criteria</span> <span class="k">is</span> <span class="k">not</span> <span class="n">attained</span>
+</code></pre></div>
 
 
 <h2>Python Implementation</h2>
@@ -208,7 +209,7 @@ While maximum iterations or minimum error criteria is not attained
 <li>The updates are performed using a slightly modified version of the initial paper, by the same authors (For further reading, go check this paper <a href="http://www.softcomputing.net/nabic11_7.pdf">Inertia weight strategies in PSO</a>).</li>
 </ul>
 <p>Here is the python code which tries to implement a simple PSO:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="k">class</span> <span class="nc">PSO</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
@@ -308,11 +309,11 @@ While maximum iterations or minimum error criteria is not attained
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particles_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_best</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We can test it on the sphere function, for example.</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sphere</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">sphere</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">      In 3D: f(x,y,z) = x² + y² + z²</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -322,10 +323,10 @@ While maximum iterations or minimum error criteria is not attained
 <span class="n">init_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">PSO_s</span> <span class="o">=</span> <span class="n">PSO</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">sphere</span><span class="p">,</span> <span class="n">init_pos</span><span class="o">=</span><span class="n">init_pos</span><span class="p">,</span> <span class="n">n_particles</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">res_s</span> <span class="o">=</span> <span class="n">PSO_s</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sphere function&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;x = {res_s[0]}&#39;</span><span class="p">)</span> <span class="c1"># x = [-0.00025538 -0.00137996  0.00248555]</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;f = {res_s[1]}&#39;</span><span class="p">)</span> <span class="c1"># f = 8.14748063004205e-06</span>
-</pre></div>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sphere function&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x = </span><span class="si">{</span><span class="n">res_s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># x = [-0.00025538 -0.00137996  0.00248555]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;f = </span><span class="si">{</span><span class="n">res_s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># f = 8.14748063004205e-06</span>
+</code></pre></div>
 
 
 <h2>Some points to discuss</h2>
